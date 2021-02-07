@@ -1,0 +1,30 @@
+{
+    "name": "web-id/synchro-digitalocean-spaces",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Gabriel Pillet",
+            "email": "gabriel@web-id.fr"
+        }
+    ],
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "require": {
+        "php": "^7.4",
+        "symfony/dotenv": "^5.2",
+        "symfony/console": "^5.2",
+        "webmozart/assert": "^1.9",
+        "aws/aws-sdk-php": "^3.173",
+        "symfony/stopwatch": "^5.2"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^0.12.72",
+        "squizlabs/php_codesniffer": "^3.5"
+    }
+}

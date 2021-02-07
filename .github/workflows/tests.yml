@@ -1,0 +1,38 @@
+name:  Synchro S3 Tests
+on: [push]
+jobs:
+  tests:
+    runs-on: ubuntu-20.04
+    steps:
+
+      # Setup
+      - name: Setup PHP 7.4
+        uses: shivammathur/setup-php@v2
+        with:
+            php-version: '7.4'
+            tools: composer:v2
+
+      - uses: actions/checkout@v2
+
+      # Preparing environment
+      - name: Setting up environment
+        run: make install
+
+      # Tests that just need composer dependencies
+      - name: Running phpstan
+        run: make stan
+
+      - name: Running phpcs
+        run: make cs
+
+      # On failure
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        if: ${{ failure() }}
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_COLOR: '#FF5555'
+          SLACK_USERNAME: 'Synchro S3 CI'
+          SLACK_ICON_EMOJI: ':fml:'
+          SLACK_TITLE: Dernier commit
+          SLACK_FOOTER: "“Plus le combat est dur plus la victoire est belle” — Booba"

@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+<?php declare(strict_types=1);
+
+use App\Command\DownloadDirectoryCommand;
+use App\Command\UploadDirectoryCommand;
+use Symfony\Component\Dotenv\Dotenv;
+use Symfony\Component\Console\Application;
+
+require(__DIR__.'/../vendor/autoload.php');
+
+$dotenv = new Dotenv();
+$dotenv->loadEnv(__DIR__.'/../.env');
+
+$application = new Application();
+$application->add(new DownloadDirectoryCommand());
+$application->add(new UploadDirectoryCommand());
+$application->run();
