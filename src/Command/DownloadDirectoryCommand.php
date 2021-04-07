@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use Aws\CommandInterface;
 use Aws\S3\S3Client;
 use Aws\S3\Transfer;
 use Symfony\Component\Console\Command\Command;
@@ -11,7 +10,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Stopwatch\Stopwatch;
-use Webmozart\Assert\Assert;
 
 class DownloadDirectoryCommand extends Command
 {
