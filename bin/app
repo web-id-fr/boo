@@ -15,4 +15,5 @@ $application = new Application();
 $application->add(new DownloadDirectoryCommand());
 $application->add(new UploadDirectoryCommand());
 $application->add(new \App\Command\ImagesResizeCommand());
+$application->add(new \App\Command\ImagesOptimizeCommand());
 $application->run();

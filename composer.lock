@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ec1f092f78209ece69b6c38315417e8a",
+    "content-hash": "8633abb23bbf6a1ccfb2b69a67405979",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -95,6 +95,62 @@
                 "source": "https://github.com/aws/aws-sdk-php/tree/3.173.4"
             },
             "time": "2021-02-05T19:19:35+00:00"
+        },
+        {
+            "name": "bensquire/php-image-optim",
+            "version": "2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bensquire/php-image-optim.git",
+                "reference": "29e49f5b5a45c6e187b6e3d395f2ca23e268a246"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bensquire/php-image-optim/zipball/29e49f5b5a45c6e187b6e3d395f2ca23e268a246",
+                "reference": "29e49f5b5a45c6e187b6e3d395f2ca23e268a246",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.14",
+                "phpstan/phpstan": "^0.11.5",
+                "phpunit/phpunit": "7.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PHPImageOptim\\": "src/PHPImageOptim"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ben Squire",
+                    "email": "b.squire@gmail.com",
+                    "homepage": "https://github.com/bensquire/php-image-optim"
+                }
+            ],
+            "description": "A library to aid in image optimisation",
+            "homepage": "https://github.com/bensquire/php-image-optim",
+            "keywords": [
+                "gif",
+                "image",
+                "jpg",
+                "optimisation",
+                "php",
+                "png"
+            ],
+            "support": {
+                "issues": "https://github.com/bensquire/php-image-optim/issues",
+                "source": "https://github.com/bensquire/php-image-optim/tree/2.1.0",
+                "wiki": "https://github.com/bensquire/php-image-optim/wiki"
+            },
+            "time": "2019-05-05T22:46:23+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",

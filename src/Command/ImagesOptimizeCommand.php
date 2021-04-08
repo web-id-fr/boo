@@ -4,7 +4,8 @@ namespace App\Command;
 
 use App\Services\ImagesFinder;
 use App\utils\ConsoleUtils;
-use Intervention\Image\ImageManager;
+use PHPImageOptim\Tools\Jpeg\MozJpeg;
+use PHPImageOptim\Tools\Png\PngQuant;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
@@ -16,6 +17,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
 /*
  * ex : php bin/app img:optimize /Users/yfrommelt/Sites/gitrepos/s3-synchro-script/var
  */
+
 class ImagesOptimizeCommand extends Command
 {
     protected static $defaultName = 'img:optimize';
@@ -62,12 +64,11 @@ class ImagesOptimizeCommand extends Command
         $progressBar->start();
         foreach ($images as $imagePath) {
             try {
-
+                $this->optimizeImage($imagePath);
             } catch (\Exception $e) {
                 $io->error(sprintf("%s\n%s", $e->getMessage(), $imagePath));
             }
 
-            $progressBar->setMessage('Task is in progress...');
             $progressBar->advance();
             $sample--;
             if ($sample === 0) {
@@ -85,5 +86,21 @@ class ImagesOptimizeCommand extends Command
         ));
 
         return Command::SUCCESS;
+    }
+
+    private function optimizeImage(string $imagePath)
+    {
+        if (preg_match('/.jpe?g$/i', $imagePath)) {
+            $tool = new MozJpeg(['optimize' => '']);
+            $tool->setBinaryPath($_ENV['BIN_MOZJPEG']);
+        } elseif (preg_match('/.png$/i', $imagePath)) {
+            $tool = new PngQuant();
+            $tool->setBinaryPath($_ENV['BIN_PNGQUANT']);
+        } else {
+            throw new \Exception('Unknow file extension');
+        }
+
+        $tool->setImagePath($imagePath);
+        $tool->optimise();
     }
 }
