@@ -7,6 +7,8 @@ Synchronization script for Amazon S3 and compatible solutions (DigitalOcean spac
 ## Requirements
 
 * PHP 7.4+
+* MozJpeg (`brew install mozjpeg`)
+* PngQuant (`brew install pngquant`)
 
 ## Setup
 
@@ -15,9 +17,18 @@ git clone
 make install
 ```
 
+Env file 
+```dotenv
+BIN_MOZJPEG=/usr/local/opt/mozjpeg/bin/jpegtran
+BIN_PNGQUANT=/usr/local/bin/pngquant
+```
+
 ## Usage
 
-@TODO
+1. Download from s3 (`php bin/app s3:download-directory /dir`)
+1. Resize images (`php bin/app img:resize --size 1345 /dir`)
+1. Optimize images (`php bin/app img:optimize /dir`)
+1. Upload to s3 (`php bin/app s3:upload-directory /dir`)
 
 ## Troubleshooting
 

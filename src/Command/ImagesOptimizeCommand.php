@@ -57,7 +57,7 @@ class ImagesOptimizeCommand extends Command
 
         $this->stopwatch->start('Optimize Images');
 
-        $sample = 10; // Change for sample limitation
+        $sample = 0; // Change for sample limitation
         $maxProgress = ($sample > 0) ? $sample : count($images);
 
         $progressBar = new ProgressBar($output, $maxProgress);

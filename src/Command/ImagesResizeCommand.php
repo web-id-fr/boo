@@ -13,7 +13,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Stopwatch\Stopwatch;
 
 /*
- * ex : php bin/app img:resize /Users/yfrommelt/Sites/gitrepos/s3-synchro-script/var
+ * ex : php bin/app img:resize /Users/yfrommelt/Sites/gitrepos/s3-synchro-script/var --size 1345
  */
 class ImagesResizeCommand extends Command
 {
