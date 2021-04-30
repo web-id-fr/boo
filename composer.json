@@ -1,10 +1,14 @@
 {
-    "name": "web-id/synchro-digitalocean-spaces",
+    "name": "web-id/boo",
     "type": "project",
     "authors": [
         {
             "name": "Gabriel Pillet",
             "email": "gabriel@web-id.fr"
+        },
+        {
+            "name": "Yoann Frommelt",
+            "email": "yoann@web-id.fr"
         }
     ],
     "config": {

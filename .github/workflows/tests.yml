@@ -1,4 +1,4 @@
-name:  Synchro S3 Tests
+name:  Boo
 on: [push]
 jobs:
   tests:

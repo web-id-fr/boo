@@ -1,8 +1,8 @@
-![Synchro S3 Tests](https://github.com/web-id-fr/s3-synchro-script/workflows/Synchro%20S3%20Tests/badge.svg?branch=main)
+![Boo](https://github.com/web-id-fr/boo/workflows/Boo/badge.svg?branch=main)
 
-# S3 Synchro Script
+# 👻 Boo
 
-Synchronization script for Amazon S3 and compatible solutions (DigitalOcean spaces for example).
+Backup, Optimize and Oversee.
 
 ## Requirements
 
