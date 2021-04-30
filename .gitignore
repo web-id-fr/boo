@@ -4,3 +4,4 @@ vendor
 var
 .env
 .idea
+.DS_Store

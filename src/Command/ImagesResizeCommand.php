@@ -69,6 +69,8 @@ class ImagesResizeCommand extends Command
         foreach ($images as $imagePath) {
             try {
                 $image = $this->imagesManager->make($imagePath);
+                $image->orientate();
+                
                 // resize the image so that the largest side fits within the limit; the smaller
                 // side will be scaled to maintain the original aspect ratio
                 $image->resize($maxWidth, $maxHeight, function ($constraint) {

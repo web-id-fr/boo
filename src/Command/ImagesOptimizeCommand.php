@@ -37,7 +37,6 @@ class ImagesOptimizeCommand extends Command
     {
         $this->setDescription('Optimize images');
         $this->addArgument('source', InputArgument::REQUIRED, 'Source images folder');
-        $this->addOption('size', null, InputArgument::OPTIONAL, 'Max output image size', 1000);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

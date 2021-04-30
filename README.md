@@ -1,8 +1,8 @@
-![Synchro S3 Tests](https://github.com/web-id-fr/s3-synchro-script/workflows/Synchro%20S3%20Tests/badge.svg?branch=main)
+![Boo](https://github.com/web-id-fr/boo/workflows/Boo/badge.svg?branch=main)
 
-# S3 Synchro Script
+# 👻 Boo
 
-Synchronization script for Amazon S3 and compatible solutions (DigitalOcean spaces for example).
+Backup, Optimize and Oversee.
 
 ## Requirements
 
@@ -15,20 +15,19 @@ Synchronization script for Amazon S3 and compatible solutions (DigitalOcean spac
 ```bash
 git clone
 make install
+cp .env.example .env
 ```
 
-Env file 
-```dotenv
-BIN_MOZJPEG=/usr/local/opt/mozjpeg/bin/jpegtran
-BIN_PNGQUANT=/usr/local/bin/pngquant
-```
+Update .env file with your S3 credentials if needed.
 
 ## Usage
 
-1. Download from s3 (`php bin/app s3:download-directory /dir`)
-1. Resize images (`php bin/app img:resize --size 1345 /dir`)
-1. Optimize images (`php bin/app img:optimize /dir`)
-1. Upload to s3 (`php bin/app s3:upload-directory /dir`)
+* Download from s3 (`php bin/app s3:download-directory /dir`)
+* Resize images (`php bin/app img:resize --size 1345 /dir`)
+* Optimize images (`php bin/app img:optimize /dir`)
+* Upload to s3 (`php bin/app s3:upload-directory /dir`)
+
+Note : optimize should be called AFTER resize for better results.
 
 ## Troubleshooting
 
