@@ -1,4 +1,6 @@
 bin/*
 !bin/app
 vendor
+var
 .env
+.idea
