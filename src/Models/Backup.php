@@ -10,18 +10,18 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Backup extends Model
 {
-    const STATUS_SUCCESS = 1;
-    const STATUS_FAILED = 2;
+    public const STATUS_SUCCESS = 1;
+    public const STATUS_FAILED = 2;
 
-    const STATUS = [
+    public const STATUS = [
         self::STATUS_SUCCESS => 'Success',
         self::STATUS_FAILED => 'Failed',
     ];
 
-    const TYPE_DATABASE = 1;
-    const TYPE_FILE = 2;
+    public const TYPE_DATABASE = 1;
+    public const TYPE_FILE = 2;
 
-    const TYPES = [
+    public const TYPES = [
         self::TYPE_DATABASE => 'Database',
         self::TYPE_FILE => 'File',
     ];
@@ -32,10 +32,10 @@ class Backup extends Model
         'name',
         'status',
         'type',
-        'backup_at'
+        'backup_at',
     ];
 
     protected $casts = [
-        'backup_at' => 'datetime'
+        'backup_at' => 'datetime',
     ];
 }

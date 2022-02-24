@@ -4,5 +4,4 @@ namespace WebId\Boo;
 
 class Boo
 {
-
 }

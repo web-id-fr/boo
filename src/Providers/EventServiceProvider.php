@@ -12,11 +12,11 @@ class EventServiceProvider extends ServiceProvider
 {
     protected $listen = [
         BackupWasSuccessful::class => [
-            BackupSuccessfulListener::class
+            BackupSuccessfulListener::class,
         ],
 
         BackupHasFailed::class => [
-            BackupFailedListener::class
-        ]
+            BackupFailedListener::class,
+        ],
     ];
 }
