@@ -33,6 +33,8 @@ class BooServiceProvider extends PackageServiceProvider
 
     public function register()
     {
+        parent::register();
+
         $this->app->register(EventServiceProvider::class);
     }
 }
