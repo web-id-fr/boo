@@ -6,9 +6,7 @@ help:
 install: ## Installation des dépendances du projet
 	composer install
 	php artisan key:generate
-	make refresh
-
-refresh: ## Reset la base de données
+	php artisan optimize:clear
 
 test: ## Lance tout les tests
 	bin/phpunit

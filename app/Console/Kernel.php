@@ -15,7 +15,13 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        if (is_string(config('backup.daily_clean_time'))) {
+            $schedule->command('backup:clean')->daily()->at(config('backup.daily_clean_time'));
+        }
+
+        if (is_string(config('backup.daily_backup_time'))) {
+            $schedule->command('backup:run')->daily()->at(config('backup.daily_backup_time'));
+        }
     }
 
     /**

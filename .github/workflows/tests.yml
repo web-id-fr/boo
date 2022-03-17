@@ -17,8 +17,15 @@ jobs:
           coverage: none
 
       - name: .env copy
-        run: cp .env.example .env
+        run: cp .env.example .env      
+        
+      # - name: Replacing .env values
+      #   run: |
+      #     sed -i -e "s/DB_PASSWORD.*/DB_PASSWORD=''/" .env
 
+      - name: Starting MySQL
+        run: sudo systemctl start mysql.service
+        
       - name: Setup project
         run: make install
 
