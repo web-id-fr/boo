@@ -3,6 +3,12 @@
 // BACKUP_PROJECT_DIRECTORY is the path of the project to backup (source code, assets).
 $projectDirectory = rtrim(env('BACKUP_PROJECT_DIRECTORY') ?? '', '/');
 
+// BACKUP_EXCLUDE_DIRECTORIES is a list of directories to exclude from the backup.
+$excludeDirectories = explode(',', env('BACKUP_EXCLUDE_DIRECTORIES') ?? '');
+$excludeDirectories = array_map(function ($directory) use ($projectDirectory) {
+    return $projectDirectory . '/' . trim($directory, '/');
+}, $excludeDirectories);
+
 return [
     /** These are boo specific */
     'daily_clean_time' => env('BACKUP_DAILY_CLEAN_TIME'),
@@ -32,11 +38,7 @@ return [
                  *
                  * Directories used by the backup process will automatically be excluded.
                  */
-                'exclude' => [
-                    $projectDirectory.'/.git',
-                    $projectDirectory.'/vendor',
-                    $projectDirectory.'/node_modules',
-                ],
+                'exclude' => $excludeDirectories,
 
                 /*
                  * Determines if symlinks should be followed.
