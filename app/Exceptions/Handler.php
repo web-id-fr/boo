@@ -32,10 +32,16 @@ class Handler extends ExceptionHandler
      *
      * @return void
      */
-    public function register()
+    public function report(Throwable $exception)
     {
-        $this->reportable(function (Throwable $e) {
-            //
-        });
+        if (app()->bound('sentry') && $this->shouldReport($exception)) {
+            \Sentry\configureScope(function (\Sentry\State\Scope $scope): void {
+                $scope->setTag('app.name', config('app.name'));
+            });
+
+            app('sentry')->captureException($exception);
+        }
+    
+        parent::report($exception);
     }
 }
