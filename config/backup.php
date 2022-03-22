@@ -14,6 +14,13 @@ return [
     'daily_clean_time' => env('BACKUP_DAILY_CLEAN_TIME'),
     'daily_backup_time' => env('BACKUP_DAILY_BACKUP_TIME'),
 
+    /** For S3 backup with rclone */
+    'daily_s3_backup_time' => env('BACKUP_DAILY_BACKUP_S3_TIME'),
+    's3' => [
+        'rclone_source' => env('BACKUP_S3_RCLONE_SOURCE'),
+        'rclone_destination' => env('BACKUP_S3_RCLONE_DESTINATION'),
+    ],
+
     'backup' => [
 
         /*
