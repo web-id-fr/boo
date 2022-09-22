@@ -9,17 +9,35 @@ $excludeDirectories = array_map(function ($directory) use ($projectDirectory) {
     return $projectDirectory . '/' . trim($directory, '/');
 }, $excludeDirectories);
 
+/** For S3 backup with rclone */
+$s3Backups = [
+    'backup_1' => [
+        'daily_s3_backup_time' => env('BACKUP_DAILY_BACKUP_S3_TIME'),
+        's3' => [
+            'rclone_source' => env('BACKUP_S3_RCLONE_SOURCE'),
+            'rclone_destination' => env('BACKUP_S3_RCLONE_DESTINATION'),
+        ]
+    ]
+];
+
+for ($i = 2; $i < 100 ; $i++) {
+    if (env('BACKUP_DAILY_BACKUP_S3_TIME_' . $i) !== null) {
+        $s3Backups['backup_' . $i] = [
+            'daily_s3_backup_time' => env('BACKUP_DAILY_BACKUP_S3_TIME_' . $i),
+            's3' => [
+                'rclone_source' => env('BACKUP_S3_RCLONE_SOURCE_'. $i),
+                'rclone_destination' => env('BACKUP_S3_RCLONE_DESTINATION_'. $i),
+            ]
+        ];
+    }
+}
+
 return [
     /** These are boo specific */
     'daily_clean_time' => env('BACKUP_DAILY_CLEAN_TIME'),
     'daily_backup_time' => env('BACKUP_DAILY_BACKUP_TIME'),
 
-    /** For S3 backup with rclone */
-    'daily_s3_backup_time' => env('BACKUP_DAILY_BACKUP_S3_TIME'),
-    's3' => [
-        'rclone_source' => env('BACKUP_S3_RCLONE_SOURCE'),
-        'rclone_destination' => env('BACKUP_S3_RCLONE_DESTINATION'),
-    ],
+    's3_backups' => $s3Backups,
 
     'backup' => [
 
