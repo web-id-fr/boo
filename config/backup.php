@@ -20,7 +20,7 @@ $s3Backups = [
     ]
 ];
 
-for ($i = 2; $i < 100 ; $i++) {
+for ($i = 2; $i < 100; $i++) {
     if (env('BACKUP_DAILY_BACKUP_S3_TIME_' . $i) !== null) {
         $s3Backups['backup_' . $i] = [
             'daily_s3_backup_time' => env('BACKUP_DAILY_BACKUP_S3_TIME_' . $i),
