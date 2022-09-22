@@ -23,10 +23,13 @@ class Kernel extends ConsoleKernel
             $schedule->command('backup:run')->daily()->at(config('backup.daily_backup_time'));
         }
 
+        /** @var \Illuminate\Config\Repository $config */
+        $config = config();
+
         for ($i = 1; $i < 100 ; $i++) {
-            if (config()->has('backup.s3_backups.backup_' . $i . '.daily_s3_backup_time')
-                && config()->has('backup.s3_backups.backup_' . $i . '.s3.rclone_source')
-                && config()->has('backup.s3_backups.backup_' . $i . '.s3.rclone_destination')
+            if ($config->has('backup.s3_backups.backup_' . $i . '.daily_s3_backup_time')
+                && $config->has('backup.s3_backups.backup_' . $i . '.s3.rclone_source')
+                && $config->has('backup.s3_backups.backup_' . $i . '.s3.rclone_destination')
                 && is_string(config('backup.s3_backups.backup_' . $i . '.daily_s3_backup_time'))
                 && !empty(config('backup.s3_backups.backup_' . $i . '.daily_s3_backup_time'))
                 && is_string(config('backup.s3_backups.backup_' . $i . '.s3.rclone_source'))
