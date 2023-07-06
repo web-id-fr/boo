@@ -39,6 +39,8 @@ return [
 
     's3_backups' => $s3Backups,
 
+    'backup_command_extra_flags' => env('BACKUP_COMMAND_EXTRA_FLAGS', ''),
+
     'backup' => [
 
         /*
