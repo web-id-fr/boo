@@ -5,14 +5,10 @@ on: [push]
 jobs:
   tests:
     name: Tests
-    runs-on: ${{ matrix.operating-system }}
+    runs-on: 'ubuntu-latest'
     strategy:
       matrix:
-        operating-system: 'ubuntu-latest'
         php-versions: [ '8.1', '8.2' ]
-        include:
-          - operating-system: 'ubuntu-latest'
-            php-versions: '8.0'
 
     steps:
       - uses: actions/checkout@v2
