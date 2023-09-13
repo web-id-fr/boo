@@ -50,6 +50,12 @@ Create and edit your own `.env` file with [.env.example](.env.example)
 curl https://raw.githubusercontent.com/web-id-fr/boo/main/.env.example --output .env
 ```
 
+Set the target directory as the volume path inside the container
+
+```ini
+BACKUP_PROJECT_DIRECTORY=/target
+```
+
 Example command to list backups done.
 
 ```bash
