@@ -244,7 +244,7 @@ return [
             'disks' => ['backup'],
             'health_checks' => [
                 \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumAgeInDays::class => 1,
-                \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumStorageInMegabytes::class => (int) env('BACKUP_MAXIMUM_STORAGE_IN_MEGABYTES', 5000),
+                \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumStorageInMegabytes::class => (int) env('BACKUP_MAXIMUM_STORAGE_IN_MEGABYTES', 5000), //phpcs:ignore
             ],
         ],
 
@@ -303,7 +303,7 @@ return [
              * After cleaning up the backups remove the oldest backup until
              * this amount of megabytes has been reached.
              */
-            'delete_oldest_backups_when_using_more_megabytes_than' => (int) env('BACKUP_MAXIMUM_STORAGE_IN_MEGABYTES', 5000),
+            'delete_oldest_backups_when_using_more_megabytes_than' => (int) env('BACKUP_MAXIMUM_STORAGE_IN_MEGABYTES', 5000), //phpcs:ignore
         ],
     ],
 
