@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Artisan;
 
 class BackupAttempts extends Command
 {
-    protected $signature = 'backup:run-attempts {--attempts=3 : Number of attempts} {--filename=} {--only-db} {--db-name=*} {--only-files} {--only-to-disk=} {--disable-notifications} {--timeout=}';
+    protected $signature = 'backup:run-attempts {--attempts=3 : Number of attempts} {--filename=} {--only-db} {--db-name=*} {--only-files} {--only-to-disk=} {--disable-notifications} {--timeout=}'; //phpcs:ignore
 
     protected $description = 'Run the backup and retry if it fails.';
 
