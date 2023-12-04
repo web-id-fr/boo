@@ -20,10 +20,20 @@ class Kernel extends ConsoleKernel
         }
 
         if (is_string(config('backup.daily_backup_time'))) {
-            $schedule
-                ->command(trim('backup:run ' . config('backup.backup_command_extra_flags')))
-                ->daily()
-                ->at(config('backup.daily_backup_time'));
+            if (config('backup.attempts') > 1) {
+                $schedule
+                    ->command(trim('backup:run ' . config('backup.backup_command_extra_flags')))
+                    ->daily()
+                    ->at(config('backup.daily_backup_time'));
+            } else {
+                $schedule
+                    ->command(trim(
+                        'backup:run-attempts --attempts=' . config('backup.attempts') . ' ' .
+                        config('backup.backup_command_extra_flags')
+                    ))
+                    ->daily()
+                    ->at(config('backup.daily_backup_time'));
+            }
         }
 
         /** @var \Illuminate\Config\Repository $config */
