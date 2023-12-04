@@ -41,6 +41,8 @@ return [
 
     'backup_command_extra_flags' => env('BACKUP_COMMAND_EXTRA_FLAGS', ''),
 
+    'attempts' => (int) env('BACKUP_ATTEMPTS', '1'),
+
     'backup' => [
 
         /*
