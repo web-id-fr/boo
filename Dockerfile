@@ -10,7 +10,9 @@ RUN apt-get update && apt-get install -y \
     unzip \
     libzip-dev \
     default-mysql-client \
-    && docker-php-ext-install zip \
+    postgresql \
+    libpq-dev \
+    && docker-php-ext-install zip pdo_pgsql pgsql \
     && apt-get -y autoremove \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
