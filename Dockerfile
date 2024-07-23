@@ -10,7 +10,6 @@ RUN apt-get update && apt-get install -y \
     unzip \
     libzip-dev \
     default-mysql-client \
-    postgresql \
     libpq-dev \
     && docker-php-ext-install zip \
     && apt-get -y autoremove \
@@ -26,12 +25,6 @@ RUN apt-get update && \
     wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
     echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
     echo "Package: *\nPin: origin apt.postgresql.org\nPin-Priority: 1001" > /etc/apt/preferences.d/pgdg.pref
-
-# Remove any existing PostgreSQL packages
-RUN apt-get update && \
-    apt-get purge -y postgresql-* && \
-    apt-get autoremove -y && \
-    apt-get clean
 
 # Install the specific PostgreSQL client version
 RUN apt-get update && \
