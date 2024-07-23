@@ -8,7 +8,11 @@ on:
 jobs:
   docker-ci:
     runs-on: ubuntu-latest
-    name: "Build ans push docker image"
+    name: "Build and push docker images"
+
+    strategy:
+      matrix:
+        pg_version: [14, 15, 16]
 
     steps:
       - uses: actions/checkout@v3
@@ -29,7 +33,9 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: webidfr/boo:latest
+          tags: webidfr/boo:postgres-${{ matrix.pg_version }}
           context: .
           file: Dockerfile
+          build-args: |
+            PG_VERSION=${{ matrix.pg_version }}
           platforms: linux/amd64,linux/arm64
