@@ -46,6 +46,8 @@ Requirements:
 
 Create and edit your own `.env` file with [.env.example](.env.example)
 
+ℹ️ mysqldump Ver 10.19 Distrib 10.11.6-MariaDB is installed on every image. Only various postgres versions images are available.
+
 ```bash
 curl https://raw.githubusercontent.com/web-id-fr/boo/main/.env.example --output .env
 ```
@@ -59,11 +61,11 @@ BACKUP_PROJECT_DIRECTORY=/target
 Example command to list backups done.
 
 ```bash
-docker run \
+docker run --rm \
     -v $(pwd)/.env:/application/.env \
     -v /your/path/to/backup:/target \
     --network="host" \
-    webidfr/boo:latest php artisan backup:list
+    webidfr/boo:postgres-16 php artisan backup:list
 ```
 
 ### Scheduler
@@ -71,7 +73,7 @@ docker run \
 Create a new cronjob called every minute like this:
 
 ```
-* * * * * docker run -v /your/path/.env:/application/.env -v /your/path/to/backup:/target --network="host" webidfr/boo:latest schedule:run
+* * * * * docker run --rm -v /your/path/.env:/application/.env -v /your/path/to/backup:/target --network="host" webidfr/boo:postgres-16 schedule:run
 ```
 
 ## Tests
