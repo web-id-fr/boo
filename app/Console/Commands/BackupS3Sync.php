@@ -62,7 +62,7 @@ class BackupS3Sync extends Command
             $this->backupSizeOutput,
             $duration
         );
-        
+
         Notification::route('slack', config('backup.notifications.slack.webhook_url'))
             ->notifyNow($notification);
 
@@ -120,7 +120,6 @@ class BackupS3Sync extends Command
     protected function getSource(): string
     {
         $source = $this->argument('source');
-        Assert::string($source);
         Assert::notEmpty($source);
 
         return $source;
@@ -129,7 +128,6 @@ class BackupS3Sync extends Command
     protected function getDestination(): string
     {
         $destination = $this->argument('destination');
-        Assert::string($destination);
         Assert::notEmpty($destination);
 
         return $destination;

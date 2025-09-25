@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Config;
 
 class Kernel extends ConsoleKernel
 {
@@ -23,14 +24,14 @@ class Kernel extends ConsoleKernel
             if (config('backup.attempts') > 1) {
                 $schedule
                     ->command(trim(
-                        'backup:run-attempts --attempts=' . config('backup.attempts') . ' ' .
-                        config('backup.backup_command_extra_flags')
+                        'backup:run-attempts --attempts=' . Config::string('backup.attempts') . ' ' .
+                        Config::string('backup.backup_command_extra_flags')
                     ))
                     ->daily()
                     ->at(config('backup.daily_backup_time'));
             } else {
                 $schedule
-                    ->command(trim('backup:run ' . config('backup.backup_command_extra_flags')))
+                    ->command(trim('backup:run ' . Config::string('backup.backup_command_extra_flags')))
                     ->daily()
                     ->at(config('backup.daily_backup_time'));
             }
