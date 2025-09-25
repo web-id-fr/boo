@@ -1,0 +1,29 @@
+services:
+  php-cli:
+    build:
+      context: ./docker/dev/php
+      dockerfile: Dockerfile
+      target: cli
+      args:
+        WWWUSER: "${WWWUSER:-1000}"
+        WWWGROUP: "${WWWGROUP:-1000}"
+        PHP_VERSION: "${PHP_VERSION:-8.4}"
+        PG_VERSION: "${PG_VERSION:-16}"
+    restart: unless-stopped
+    working_dir: /application
+    volumes:
+      - ".:/application"
+    tty: true
+
+  minio:
+    image: minio/minio:latest
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: password
+    command: 'minio server /data/minio --console-address ":8900"'
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      retries: 3
+      timeout: 5s
+    ports:
+      - "8900:8900"
