@@ -1,7 +1,10 @@
 includes:
-    - ./vendor/nunomaduro/larastan/extension.neon
+    - ./vendor/larastan/larastan/extension.neon
     - ./vendor/phpstan/phpstan-webmozart-assert/extension.neon
     - ./vendor/thecodingmachine/phpstan-safe-rule/phpstan-safe-rule.neon
+    - ./vendor/nesbot/carbon/extension.neon
+    - ./vendor/phpstan/phpstan/conf/bleedingEdge.neon
+    - ./vendor/phpstan/phpstan-deprecation-rules/rules.neon
 
 parameters:
     paths:
