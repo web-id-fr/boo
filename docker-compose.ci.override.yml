@@ -1,0 +1,7 @@
+services:
+  php-cli:
+    image: "${DOCKER_REGISTRY}/php-cli:${BRANCH_IMAGE_TAG}"
+    build:
+      args:
+        PHP_VERSION: "${PHP_VERSION}"
+        PG_VERSION: "${PG_VERSION}"

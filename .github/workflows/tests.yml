@@ -1,65 +1,103 @@
-name: Tests
+name: CI
 
-on: [push]
+on:
+  push:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DOCKER_REGISTRY: "boo-general-ci"
+  DOCKER_MIRROR_REGISTRY: "rg.fr-par.scw.cloud/webid-mirror"
+  DOCKER_COMPOSE: "docker compose -f docker-compose.yml -f docker-compose.ci.override.yml"
 
 jobs:
-  tests:
+  ci:
     name: Tests
     runs-on: 'ubuntu-latest'
     strategy:
       matrix:
-        php-versions: [ '8.1', '8.2' ]
+        php-versions: ['8.1', '8.2', '8.3', '8.4']
+        pg-versions: ['14', '15', '16']
+
+    services:
+      docker:
+        image: docker:27.3.1
+        options: --privileged
+
+    env:
+      BRANCH_IMAGE_TAG: ${{ github.ref_name }}-php${{ matrix.php-versions }}-pg${{ matrix.pg-versions }}
+      PHP_VERSION: ${{ matrix.php-versions }}
+      PG_VERSION: ${{ matrix.pg-versions }}
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+      - name: Verify Docker Compose Plugin Installation
+        run: docker compose version
+
+      - uses: actions/checkout@v4
+
+      - name: "Set up Docker Buildx"
+        uses: docker/setup-buildx-action@v3
+
+      - name: Get user and group ID
+        id: user_info
+        run: |
+          USER_ID=$(id -u)
+          GROUP_ID=$(id -g)
+          echo "user_id=$USER_ID" >> $GITHUB_OUTPUT
+          echo "group_id=$GROUP_ID" >> $GITHUB_OUTPUT
+
+      - name: Build and load Docker stack locally
+        uses: docker/bake-action@v6
         with:
-          php-version: ${{ matrix.php-versions }}
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
-          coverage: none
+          files: docker-compose.yml
+          load: true
+          set: |
+            *.cache-from=type=registry,ref=composer:2.8.6
+            *.cache-from=type=gha
+            *.cache-to=type=gha,mode=max
+            *.args.WWWUSER=${{ steps.user_info.outputs.user_id }}
+            *.args.WWWGROUP=${{ steps.user_info.outputs.group_id }}
+            *.args.PHP_VERSION=${{ matrix.php-versions }}
+            *.args.PG_VERSION=${{ matrix.pg-versions }}
+            php-cli.tags=${{ env.DOCKER_REGISTRY }}/php-cli:${{ env.BRANCH_IMAGE_TAG }}
 
-      - name: .env copy
-        run: cp .env.example .env
+      - name: Start docker stack
+        run: make start
 
-      # - name: Replacing .env values
-      #   run: |
-      #     sed -i -e 's/DB_PASSWORD.*/DB_PASSWORD=''/" .env
+      - name: Display Docker Compose PS
+        run: docker compose ps
 
-      - name: Starting MySQL
-        run: sudo systemctl start mysql.service
+      # - name: Composer audit (according to Packages.org)
+      #   run: make composer_audit
 
-      - name: Setup project
-        run: make install
+      - name: Composer validate
+        run: make composer_validate
 
-      - name: Phpunit
-        run: bin/phpunit
+      - name: Setup Composer PHP dependencies
+        run: make composer_install
 
-      - name: Phpstan
-        run: bin/phpstan
+      - name: Check for coding standards
+        run: make cs
 
-      - name: Correction automatique des coding standards
-        run: bin/phpcbf
-        continue-on-error: true
+      - name: Run phpstan
+        run: make stan
 
-      - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          file_pattern: '*.php'
-          commit_message: ":robot::art: Fix CS"
+      - name: Setup .env files and generate app keys
+        run: make env_files
 
-      - name: Verification des coding standards après correction automatique
-        run: bin/phpcs
+      - name: Run tests
+        run: make test
 
       # On failure
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
-        if: ${{ failure() }}
+        if: failure() && github.ref == 'refs/heads/main'
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_CHANNEL: '#boo'
           SLACK_COLOR: '#FF5555'
           SLACK_USERNAME: 'BOO'
           SLACK_ICON_EMOJI: ':ghost:'
-          SLACK_TITLE: Dernier commit
-          SLACK_FOOTER: "“Boh ça va, ça marche en local non ?” — David Goodenough"
+          SLACK_TITLE: CI Tests Failure
