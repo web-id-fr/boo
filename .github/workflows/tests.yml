@@ -79,14 +79,14 @@ jobs:
       - name: Setup Composer PHP dependencies
         run: make composer_install
 
+      - name: Setup .env files and generate app keys
+        run: make env_files
+
       - name: Check for coding standards
         run: make cs
 
       - name: Run phpstan
         run: make stan
-
-      - name: Setup .env files and generate app keys
-        run: make env_files
 
       - name: Run tests
         run: make test
