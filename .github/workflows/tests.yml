@@ -70,8 +70,8 @@ jobs:
       - name: Display Docker Compose PS
         run: docker compose ps
 
-      # - name: Composer audit (according to Packages.org)
-      #   run: make composer_audit
+      - name: Composer audit (according to Packages.org)
+        run: make composer_audit
 
       - name: Composer validate
         run: make composer_validate
