@@ -14,12 +14,13 @@ env:
 
 jobs:
   ci:
-    name: Tests
     runs-on: 'ubuntu-latest'
     strategy:
       matrix:
         php-versions: ['8.2', '8.3', '8.4']
         pg-versions: ['14', '15', '16']
+
+    name: PHP ${{ matrix.php-versions }} - Postgres ${{ matrix.pg-versions }}
 
     services:
       docker:
