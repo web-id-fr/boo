@@ -34,7 +34,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: webidfr/boo:postgres-${{ matrix.pg_version }}
+          tags: webidfr/boo:2025-postgres-${{ matrix.pg_version }}
           context: .
           file: Dockerfile
           build-args: |
