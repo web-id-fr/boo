@@ -1,0 +1,1 @@
+CREATE DATABASE boo_test;

@@ -7,7 +7,7 @@ It is also possible to duplicate one or more S3 buckets during this backup.
 
 ## Requirements
 
-* PHP 8.1 >
+* PHP 8.2 >
 * Composer 2
 * MySQL | PostgreSQL
 
@@ -65,7 +65,7 @@ docker run --rm \
     -v $(pwd)/.env:/application/.env \
     -v /your/path/to/backup:/target \
     --network="host" \
-    webidfr/boo:postgres-16 php artisan backup:list
+    webidfr/boo:2025-postgres-16 php artisan backup:list
 ```
 
 ### Scheduler
@@ -73,7 +73,7 @@ docker run --rm \
 Create a new cronjob called every minute like this:
 
 ```
-* * * * * docker run --rm -v /your/path/.env:/application/.env -v /your/path/to/backup:/target --network="host" webidfr/boo:postgres-16 schedule:run
+* * * * * docker run --rm -v /your/path/.env:/application/.env -v /your/path/to/backup:/target --network="host" webidfr/boo:2025-postgres-16 schedule:run
 ```
 
 ## Tests

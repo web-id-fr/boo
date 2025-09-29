@@ -1,0 +1,50 @@
+volumes:
+  postgres:
+
+services:
+  php-cli:
+    build:
+      context: ./docker/dev/php
+      dockerfile: Dockerfile
+      target: cli
+      args:
+        WWWUSER: "${WWWUSER:-1000}"
+        WWWGROUP: "${WWWGROUP:-1000}"
+        PHP_VERSION: "${PHP_VERSION:-8.4}"
+        PG_VERSION: "${PG_VERSION:-16}"
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    working_dir: /application
+    volumes:
+      - ".:/application"
+    tty: true
+
+  postgres:
+    image: "postgres:${PG_VERSION:-16}-alpine"
+    restart: unless-stopped
+    volumes:
+      - "postgres:/var/lib/postgresql/data"
+      - "./docker/dev/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql"
+    environment:
+      POSTGRES_PASSWORD: "root"
+      POSTGRES_USER: "root"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U root -d boo_test" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  minio:
+    image: minio/minio:latest
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: password
+    command: 'minio server /data/minio --console-address ":8900"'
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      retries: 3
+      timeout: 5s
+    ports:
+      - "8900:8900"

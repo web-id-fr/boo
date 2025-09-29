@@ -1,4 +1,4 @@
-name: docker-ci
+name: "Build and push docker images"
 
 on:
   push:
@@ -8,14 +8,15 @@ on:
 jobs:
   docker-ci:
     runs-on: ubuntu-latest
-    name: "Build and push docker images"
 
     strategy:
       matrix:
         pg_version: [14, 15, 16]
 
+    name: "Building image with Postgres ${{ matrix.pg-version }}"
+
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -33,7 +34,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: webidfr/boo:postgres-${{ matrix.pg_version }}
+          tags: webidfr/boo:2025-postgres-${{ matrix.pg_version }}
           context: .
           file: Dockerfile
           build-args: |
