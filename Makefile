@@ -7,7 +7,7 @@ DOCKER_EXEC_PHP=${DOCKER_COMPOSE} exec php-cli
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-install: build start composer_install env_files ## Setup dev docker compose stack
+install: build start composer_install env_files fresh ## Setup dev docker compose stack
 	@echo "🔨 Project setup done!"
 
 build: ## Build dev docker compose stack
@@ -36,6 +36,21 @@ restart: stop start
 
 destroy: ## Destroy docker compose stack with volumes
 	$(DOCKER_COMPOSE) --profile "*" down -v
+	find storage/app/public/ -regex '.*job\-.*\-attempt\-.*\-screen-.*\.png' -delete # delete all job attempts screenshots
+	@read -p "Delete .env? (y/n): " confirm && \
+	if [ "$$confirm" = "y" ]; then \
+		rm -f .env; \
+		echo ".env deleted."; \
+	else \
+		echo "Deletion aborted."; \
+	fi
+	@read -p "Delete .env.testing? (y/n): " confirm && \
+	if [ "$$confirm" = "y" ]; then \
+		rm -f .env.testing; \
+		echo ".env deleted."; \
+	else \
+		echo "Deletion aborted."; \
+	fi
 
 composer_install: # Install composer dependencies
 	@echo "🔨 Setup Composer dependencies..."
@@ -45,6 +60,10 @@ env_files:
 	@echo "👻 Setup .env files and generate app keys"
 	@[ -f ./.env ] && echo '.env file already created' || cp .env.example .env && ${DOCKER_EXEC_PHP} php artisan key:generate
 	@[ -f ./.env.testing ] && echo '.env.testing file already created' || cp .env.testing.example .env.testing && ${DOCKER_EXEC_PHP} php artisan key:generate --env=testing
+
+fresh:
+	@echo "🗃️ Setup databases and run default seeding..."
+	$(DOCKER_EXEC_PHP) php artisan migrate:fresh --env=testing --seed
 
 ci: cs stan test ## Run CI suite
 
