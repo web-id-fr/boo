@@ -13,7 +13,7 @@ jobs:
       matrix:
         pg_version: [14, 15, 16]
 
-    name: "Building image with Postgres ${{ matrix.pg-version }}"
+    name: "Building image with Postgres ${{ matrix.pg_version }}"
 
     steps:
       - uses: actions/checkout@v4
