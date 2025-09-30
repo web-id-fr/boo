@@ -7,6 +7,9 @@ WORKDIR /application
 # Define the PostgreSQL version as a build argument
 ARG PG_VERSION=16
 
+# Use the default production configuration
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+
 # Install all system dependencies and PostgreSQL client in one layer
 RUN apt-get update && apt-get install -y \
     git \
