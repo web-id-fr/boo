@@ -30,6 +30,9 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+# Add skip-ssl config for mysqldump
+RUN echo "skip-ssl" >> /etc/mysql/conf.d/mysqldump.cnf
+
 # Verify installation
 RUN which pg_dump && pg_dump --version
 
