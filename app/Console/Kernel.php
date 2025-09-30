@@ -21,10 +21,10 @@ class Kernel extends ConsoleKernel
         }
 
         if (is_string(config('backup.daily_backup_time'))) {
-            if (config('backup.attempts') > 1) {
+            if (Config::integer('backup.attempts') > 1) {
                 $schedule
                     ->command(trim(
-                        'backup:run-attempts --attempts=' . Config::string('backup.attempts') . ' ' .
+                        'backup:run-attempts --attempts=' . Config::integer('backup.attempts') . ' ' .
                         Config::string('backup.backup_command_extra_flags')
                     ))
                     ->daily()
