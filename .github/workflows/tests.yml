@@ -55,7 +55,7 @@ jobs:
           files: docker-compose.yml
           load: true
           set: |
-            *.cache-from=type=registry,ref=composer:2.8.6
+            *.cache-from=type=registry,ref=composer:2.9
             *.cache-from=type=gha
             *.cache-to=type=gha,mode=max
             *.args.WWWUSER=${{ steps.user_info.outputs.user_id }}
