@@ -1,6 +1,6 @@
 # First, declare all ARGs at the top with default values
 ARG UBUNTU_IMAGE=ubuntu:jammy
-ARG COMPOSER_IMAGE=composer:2.8.6
+ARG COMPOSER_IMAGE=composer:2.9
 
 # Create composer stage first
 FROM ${COMPOSER_IMAGE} AS composer
