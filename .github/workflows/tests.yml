@@ -28,11 +28,13 @@ jobs:
         options: --privileged
 
     env:
-      BRANCH_IMAGE_TAG: ${{ github.ref_name }}-php${{ matrix.php-versions }}-pg${{ matrix.pg-versions }}
       PHP_VERSION: ${{ matrix.php-versions }}
       PG_VERSION: ${{ matrix.pg-versions }}
 
     steps:
+      - id: docker-tag
+        uses: yuya-takeyama/docker-tag-from-github-ref-action@v1
+    
       - name: Verify Docker Compose Plugin Installation
         run: docker compose version
 
@@ -62,7 +64,7 @@ jobs:
             *.args.WWWGROUP=${{ steps.user_info.outputs.group_id }}
             *.args.PHP_VERSION=${{ matrix.php-versions }}
             *.args.PG_VERSION=${{ matrix.pg-versions }}
-            php-cli.tags=${{ env.DOCKER_REGISTRY }}/php-cli:${{ env.BRANCH_IMAGE_TAG }}
+            php-cli.tags=${{ env.DOCKER_REGISTRY }}/php-cli:${{ steps.docker-tag.outputs.tag }}-php${{ matrix.php-versions }}-pg${{ matrix.pg-versions }}
 
       - name: Start docker stack
         run: make start
