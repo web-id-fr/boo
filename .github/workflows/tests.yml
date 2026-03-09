@@ -28,11 +28,24 @@ jobs:
         options: --privileged
 
     env:
-      BRANCH_IMAGE_TAG: ${{ github.ref_name }}-php${{ matrix.php-versions }}-pg${{ matrix.pg-versions }}
       PHP_VERSION: ${{ matrix.php-versions }}
       PG_VERSION: ${{ matrix.pg-versions }}
 
     steps:
+      - name: Sanitize branch name for Docker tag
+        id: sanitize-branch
+        run: |
+          RAW="${GITHUB_REF_NAME}"
+
+          TAG=$(echo "$RAW" \
+            | tr '[:upper:]' '[:lower:]' \
+            | sed 's#[^a-z0-9_.-]#-#g' \
+            | sed 's#^[.-]\+##' \
+            | sed 's#[-_.]\+#-#g' \
+            | cut -c1-60)
+
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+
       - name: Verify Docker Compose Plugin Installation
         run: docker compose version
 
@@ -62,33 +75,51 @@ jobs:
             *.args.WWWGROUP=${{ steps.user_info.outputs.group_id }}
             *.args.PHP_VERSION=${{ matrix.php-versions }}
             *.args.PG_VERSION=${{ matrix.pg-versions }}
-            php-cli.tags=${{ env.DOCKER_REGISTRY }}/php-cli:${{ env.BRANCH_IMAGE_TAG }}
+            php-cli.tags=${{ env.DOCKER_REGISTRY }}/php-cli:${{ steps.sanitize-branch.outputs.tag }}-php${{ matrix.php-versions }}-pg${{ matrix.pg-versions }}
 
       - name: Start docker stack
+        env:
+          BRANCH_IMAGE_TAG: ${{ steps.sanitize-branch.outputs.tag }}-php${{ matrix.php-versions }}-pg${{ matrix.pg-versions }}
         run: make start
 
       - name: Display Docker Compose PS
+        env:
+          BRANCH_IMAGE_TAG: ${{ steps.sanitize-branch.outputs.tag }}-php${{ matrix.php-versions }}-pg${{ matrix.pg-versions }}
         run: docker compose ps
 
       - name: Composer audit (according to Packages.org)
+        env:
+          BRANCH_IMAGE_TAG: ${{ steps.sanitize-branch.outputs.tag }}-php${{ matrix.php-versions }}-pg${{ matrix.pg-versions }}
         run: make composer_audit
 
       - name: Composer validate
+        env:
+          BRANCH_IMAGE_TAG: ${{ steps.sanitize-branch.outputs.tag }}-php${{ matrix.php-versions }}-pg${{ matrix.pg-versions }}
         run: make composer_validate
 
       - name: Setup Composer PHP dependencies
+        env:
+          BRANCH_IMAGE_TAG: ${{ steps.sanitize-branch.outputs.tag }}-php${{ matrix.php-versions }}-pg${{ matrix.pg-versions }}
         run: make composer_install
 
       - name: Setup .env files and generate app keys
+        env:
+          BRANCH_IMAGE_TAG: ${{ steps.sanitize-branch.outputs.tag }}-php${{ matrix.php-versions }}-pg${{ matrix.pg-versions }}
         run: make env_files
 
       - name: Check for coding standards
+        env:
+          BRANCH_IMAGE_TAG: ${{ steps.sanitize-branch.outputs.tag }}-php${{ matrix.php-versions }}-pg${{ matrix.pg-versions }}
         run: make cs
 
       - name: Run phpstan
+        env:
+          BRANCH_IMAGE_TAG: ${{ steps.sanitize-branch.outputs.tag }}-php${{ matrix.php-versions }}-pg${{ matrix.pg-versions }}
         run: make stan
 
       - name: Run tests
+        env:
+          BRANCH_IMAGE_TAG: ${{ steps.sanitize-branch.outputs.tag }}-php${{ matrix.php-versions }}-pg${{ matrix.pg-versions }}
         run: make test
 
       # On failure
