@@ -67,30 +67,48 @@ jobs:
             php-cli.tags=${{ env.DOCKER_REGISTRY }}/php-cli:${{ steps.docker-tag.outputs.tag }}-php${{ matrix.php-versions }}-pg${{ matrix.pg-versions }}
 
       - name: Start docker stack
+        env:
+          BRANCH_IMAGE_TAG: ${{ steps.docker-tag.outputs.tag }}-php${{ matrix.php-versions }}-pg${{ matrix.pg-versions }}
         run: make start
 
       - name: Display Docker Compose PS
+        env:
+          BRANCH_IMAGE_TAG: ${{ steps.docker-tag.outputs.tag }}-php${{ matrix.php-versions }}-pg${{ matrix.pg-versions }}
         run: docker compose ps
 
       - name: Composer audit (according to Packages.org)
+        env:
+          BRANCH_IMAGE_TAG: ${{ steps.docker-tag.outputs.tag }}-php${{ matrix.php-versions }}-pg${{ matrix.pg-versions }}
         run: make composer_audit
 
       - name: Composer validate
+        env:
+          BRANCH_IMAGE_TAG: ${{ steps.docker-tag.outputs.tag }}-php${{ matrix.php-versions }}-pg${{ matrix.pg-versions }}
         run: make composer_validate
 
       - name: Setup Composer PHP dependencies
+        env:
+          BRANCH_IMAGE_TAG: ${{ steps.docker-tag.outputs.tag }}-php${{ matrix.php-versions }}-pg${{ matrix.pg-versions }}
         run: make composer_install
 
       - name: Setup .env files and generate app keys
+        env:
+          BRANCH_IMAGE_TAG: ${{ steps.docker-tag.outputs.tag }}-php${{ matrix.php-versions }}-pg${{ matrix.pg-versions }}
         run: make env_files
 
       - name: Check for coding standards
+        env:
+          BRANCH_IMAGE_TAG: ${{ steps.docker-tag.outputs.tag }}-php${{ matrix.php-versions }}-pg${{ matrix.pg-versions }}
         run: make cs
 
       - name: Run phpstan
+        env:
+          BRANCH_IMAGE_TAG: ${{ steps.docker-tag.outputs.tag }}-php${{ matrix.php-versions }}-pg${{ matrix.pg-versions }}
         run: make stan
 
       - name: Run tests
+        env:
+          BRANCH_IMAGE_TAG: ${{ steps.docker-tag.outputs.tag }}-php${{ matrix.php-versions }}-pg${{ matrix.pg-versions }}
         run: make test
 
       # On failure
